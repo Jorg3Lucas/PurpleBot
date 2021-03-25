@@ -22,16 +22,16 @@ from userbot import CMD_HELP, bot
 from userbot.events import register
 
 # ====================== CONSTANT ===============================
-INVALID_MEDIA = "**The extension of the media entity is invalid.**"
-PP_CHANGED = "**Profile picture changed successfully.**"
-PP_TOO_SMOL = "**This image is too small, use a bigger image.**"
-PP_ERROR = "**Failure occured while processing image.**"
+INVALID_MEDIA = "**A extensão da entidade de mídia é inválida.**"
+PP_CHANGED = "**Imagem do perfil alterada com sucesso.**"
+PP_TOO_SMOL = "**Esta imagem é muito pequena, use uma imagem maior.**"
+PP_ERROR = "**Ocorreu uma falha durante o processamento da imagem.**"
 
-BIO_SUCCESS = "**Successfully edited Bio.**"
+BIO_SUCCESS = "**Bio editada com sucesso.**"
 
-NAME_OK = "**Your name was succesfully changed.**"
-USERNAME_SUCCESS = "**Your username was succesfully changed.**"
-USERNAME_TAKEN = "**This username is already taken.**"
+NAME_OK = "**Seu nome foi alterado com sucesso.**"
+USERNAME_SUCCESS = "**Seu nome de usuário foi alterado com sucesso.**"
+USERNAME_TAKEN = "**Este nome de usuário já existe. **"
 # ===============================================================
 
 
@@ -110,16 +110,16 @@ async def update_username(username):
         await username.edit(USERNAME_TAKEN)
 
 
-@register(outgoing=True, pattern=r"^\.count$")
+@register(outgoing=True, pattern=r"^\.stats$")
 async def count(event):
-    """ For .count command, get profile stats. """
+    """ For .stats command, get profile stats. """
     u = 0
     g = 0
     c = 0
     bc = 0
     b = 0
     result = ""
-    await event.edit("**Processing...**")
+    await event.edit("**Processando...**")
     dialogs = await bot.get_dialogs(limit=None, ignore_migrated=True)
     for d in dialogs:
         currrent_entity = d.entity
@@ -138,10 +138,10 @@ async def count(event):
         else:
             print(d)
 
-    result += f"**Users:**\t`{u}`\n"
-    result += f"**Groups:**\t`{g}`\n"
-    result += f"**Supergroups:**\t`{c}`\n"
-    result += f"**Channels:**\t`{bc}`\n"
+    result += f"**Usuários:**\t`{u}`\n"
+    result += f"**Grupos:**\t`{g}`\n"
+    result += f"**Supergrupos:**\t`{c}`\n"
+    result += f"**Canais:**\t`{bc}`\n"
     result += f"**Bots:**\t`{b}`"
 
     await event.edit(result)
@@ -171,25 +171,25 @@ async def remove_profilepic(delpfp):
     ]
     await delpfp.client(DeletePhotosRequest(id=input_photos))
     await delpfp.edit(
-        f"**Successfully deleted** `{len(input_photos)}` **profile picture(s).**"
+        f"**Excluído com sucesso:** `{len(input_photos)}` **foto(s) do perfil.**"
     )
 
 
 CMD_HELP.update(
     {
-        "profile": ">`.username <new_username>`"
-        "\nUsage: Changes your Telegram username."
-        "\n\n>`.name <firstname>` or >`.name <firstname> <lastname>`"
-        "\nUsage: Changes your Telegram name.(First and last name will get split by the first space)"
+        "profile": ">`.username <novo_nomedeusuário>`"
+        "\n**Uso:** Altera seu nome de usuário do Telegram."
+        "\n\n>`.name <primeiro nome>` ou >`.name <primeiro nome> <sobrenome>`"
+        "\n**Uso:** Muda o nome do seu telegram.(O nome e o sobrenome serão divididos pelo primeiro espaço)"
         "\n\n>`.setpfp`"
-        "\nUsage: Reply with .setpfp to an image to change your Telegram profie picture."
-        "\n\n>`.setbio <new_bio>`"
-        "\nUsage: Changes your Telegram bio."
-        "\n\n>`.delpfp` or >`.delpfp <number>/<all>`"
-        "\nUsage: Deletes your Telegram profile picture(s)."
+        "\n**Uso:** Responda com .setpfp a uma imagem para mudar a sua imagem de perfil do Telegram."
+        "\n\n>`.setbio <nova_bio>`"
+        "\n**Uso:** Muda sua biografia do Telegram."
+        "\n\n>`.delpfp` ou >`.delpfp <número>/<all>`"
+        "\n**Uso:** Exclui sua(s) foto(s) de perfil do Telegram."
         "\n\n>`.reserved`"
-        "\nUsage: Shows usernames reserved by you."
+        "\n**Uso:** Mostra nomes de usuário reservados por você."
         "\n\n>`.count`"
-        "\nUsage: Counts your groups, chats, bots etc..."
+        "\n**Uso:** Conta seus grupos, chats, bots etc...."
     }
 )

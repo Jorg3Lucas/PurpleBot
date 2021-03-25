@@ -53,7 +53,7 @@ LastLog = False
 @register(outgoing=True, pattern=r"^\.lastfm$")
 async def last_fm(lastFM):
     """ For .lastfm command, fetch scrobble data from last.fm. """
-    await lastFM.edit("**Processing...**")
+    await lastFM.edit("**Processando...**")
     preview = None
     playing = User(LASTFM_USERNAME, lastfm).get_now_playing()
     username = f"https://www.last.fm/user/{LASTFM_USERNAME}"
@@ -229,10 +229,10 @@ async def lastlog(lstlog):
 CMD_HELP.update(
     {
         "lastfm": ">`.lastfm`"
-        "\nUsage: Shows currently scrobbling track or most recent scrobbles if nothing is playing."
+        "\n**Uso:** Shows currently scrobbling track or most recent scrobbles if nothing is playing."
         "\n\n>`.lastbio <on/off>`"
-        "\nUsage: Enables/Disables last.fm current playing to bio."
+        "\n**Uso:** Enables/Disables last.fm current playing to bio."
         "\n\n>`.lastlog <on/off>`"
-        "\nUsage: Enable/Disable last.fm bio logging in the bot-log group."
+        "\n**Uso:** Enable/Disable last.fm bio logging in the bot-log group."
     }
 )

@@ -9,19 +9,19 @@ from telethon.sessions import StringSession
 from telethon.sync import TelegramClient
 
 print(
-    """Please go-to my.telegram.org
-Login using your Telegram account
-Click on API Development Tools
-Create a new application, by entering the required details
-Check your Telegram saved messages section to copy the STRING_SESSION"""
+    """Vá para my.telegram.org
+Faça login usando sua conta do Telegram
+Clique em Ferramentas de Desenvolvimento de API
+Crie um novo aplicativo, inserindo os detalhes necessários
+Verifique a seção de mensagens salvas do Telegram para copiar STRING_SESSION"""
 )
-API_KEY = int(input("Enter APP_ID (the shorter one): "))
-API_HASH = input("Enter API_HASH (the longer one): ")
+API_KEY = int(input("Insira a APP_ID (o mais curto): "))
+API_HASH = input("Insira a API_HASH (o mais longo): ")
 
 with TelegramClient(StringSession(), API_KEY, API_HASH) as client:
-    print("Check your Saved Messages in Telegram!")
+    print("Verifique suas mensagens salvas no telegram!")
     session_string = client.session.save()
-    saved_messages_template = """Support: @KensurOT
+    saved_messages_template = """Suporte: @Kircheiss
 
 <code>STRING_SESSION</code>: <code>{}</code>
 

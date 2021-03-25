@@ -42,7 +42,7 @@ async def get_weather(weather):
 
     if not OWM_API:
         return await weather.edit(
-            "**Get an API key from** https://openweathermap.org **first.**"
+            "**Obtenha uma chave de API de** https://openweathermap.org **primeiro.**"
         )
 
     APPID = OWM_API
@@ -59,7 +59,7 @@ async def get_weather(weather):
 
     if not CITY:
         return await weather.edit(
-            "**Please specify a city or set one as default using the WEATHER_DEFCITY config variable.**"
+            "**Especifique uma cidade ou defina uma como padrão usando a ConfigVar WEATHER_DEFCITY.**"
         )
 
     timezone_countries = {
@@ -77,7 +77,7 @@ async def get_weather(weather):
             try:
                 countrycode = timezone_countries[f"{country}"]
             except KeyError:
-                return await weather.edit("**Invalid country.**")
+                return await weather.edit("**País inválido.**")
             CITY = newcity[0].strip() + "," + countrycode.strip()
 
     url = f"https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={APPID}"
@@ -85,7 +85,7 @@ async def get_weather(weather):
     result = json.loads(request.text)
 
     if request.status_code != 200:
-        return await weather.edit("**Invalid country.**")
+        return await weather.edit("**País inválido.**")
 
     cityname = result["name"]
     curtemp = result["main"]["temp"]
@@ -124,15 +124,16 @@ async def get_weather(weather):
         return datetime.fromtimestamp(unix, tz=ctimezone).strftime("%I:%M %p")
 
     results = (
-        f"**Temperature:** `{celsius(curtemp)}°C | {fahrenheit(curtemp)}°F`\n"
-        + f"**Min. Temp.:** `{celsius(min_temp)}°C | {fahrenheit(min_temp)}°F`\n"
-        + f"**Max. Temp.:** `{celsius(max_temp)}°C | {fahrenheit(max_temp)}°F`\n"
-        + f"**Humidity:** `{humidity}%`\n"
-        + f"**Wind:** `{kmph[0]} kmh | {mph[0]} mph, {findir}`\n"
-        + f"**Sunrise:** `{sun(sunrise)}`\n"
-        + f"**Sunset:** `{sun(sunset)}`\n\n"
+        f"**Temperatura:** `{celsius(curtemp)}°C | {fahrenheit(curtemp)}°F`\n"
+        + f"**Temp. Min.:** `{celsius(min_temp)}°C | {fahrenheit(min_temp)}°F`\n"
+        + f"**Temp. Max.:** `{celsius(max_temp)}°C | {fahrenheit(max_temp)}°F`\n"
+        + f"**Umidade:** `{humidity}%`\n"
+        + f"**Vento:** `{kmph[0]} kmh | {mph[0]} mph, {findir}`\n"
+        + f"**Nascer do Sol:** `{sun(sunrise)}`\n"
+        + f"**Pôr do Sol:** `{sun(sunset)}`\n\n"
         + f"**{desc}**\n"
-        + f"`{time}`\n"
+        + f"`{cityname}, {fullc_n}`\n"
+        + f"`{time}`"
     )
     if not anonymous:
         results += f"`{cityname}, {fullc_n}`"
@@ -142,8 +143,8 @@ async def get_weather(weather):
 
 CMD_HELP.update(
     {
-        "weather": ">`.weather <city> or .weather <city>, <country name/code>`"
-        "\nUsage: Gets the weather of a city."
-        "\nUse `.weather anon` to omit location details in results. (This needs WEATHER_DEFCITY to be set)"
+        "weather": ">`.weather <cidade> ou .weather <cidade>, <nome/código do país>`"
+        "\n**Uso:** Obtém o clima de uma cidade."
+        "\nUse `.weather anon` para omitir detalhes de localização nos resultados. (Isso precisa que WEATHER_DEFCITY seja definido)"
     }
 )

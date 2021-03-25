@@ -19,15 +19,15 @@ from userbot.events import register
 async def evaluate(event):
     """For .eval command, evaluates the given Python expression."""
     if event.is_channel and not event.is_group:
-        return await event.edit("**Eval isn't permitted on channels.**")
+        return await event.edit("**O eval não é permitida em canais.**")
 
     if event.pattern_match.group(1):
         expression = event.pattern_match.group(1)
     else:
-        return await event.edit("**Give an expression to evaluate.**")
+        return await event.edit("**Dê uma expressão para eval.**")
 
     if expression in ("userbot.session", "config.env"):
-        return await event.edit("**That's a dangerous operation! Not permitted!**")
+        return await event.edit("**É uma operação perigosa! Não é permitido!**")
 
     old_stderr = sys.stderr
     old_stdout = sys.stdout
@@ -64,19 +64,19 @@ async def evaluate(event):
                     event.chat_id,
                     "output.txt",
                     reply_to=event.id,
-                    caption="**Output too large, sending as file...**",
+                    caption="**Resultadoado muito grande, enviando como arquivo...**",
                 )
                 remove("output.txt")
                 return
             await event.edit(
-                f"**Query:**\n`{expression}`\n\n**Result:**\n`{evaluation}`"
+                f"**Busca:**\n`{expression}`\n\n**Resultadoado:**\n`{evaluation}`"
             )
         else:
             await event.edit(
-                f"**Query:**\n`{expression}`\n\n**Result:**\n`No Result Returned/False`"
+                f"**Busca:**\n`{expression}`\n\n**Resultado:**\n`Nenhum resultado obtido/falso`"
             )
     except Exception as err:
-        await event.edit(f"**Query:**\n`{expression}`\n\n**Exception:**\n`{err}`")
+        await event.edit(f"**Busca:**\n`{expression}`\n\n**Exceção:**\n`{err}`")
 
 
 @register(outgoing=True, pattern=r"^\.exec(?: |$|\n)([\s\S]*)")
@@ -85,13 +85,13 @@ async def run(event):
     code = event.pattern_match.group(1)
 
     if event.is_channel and not event.is_group:
-        return await event.edit("**Exec isn't permitted on channels!**")
+        return await event.edit("**Exec não é permitido em canais!**")
 
     if not code:
-        return await event.edit("**Read** `.help exec` **for an example.**")
+        return await event.edit("**Veja** `.help exec` **para exemplos.**")
 
     if code in ("userbot.session", "config.env"):
-        return await event.edit("**That's a dangerous operation! Not permitted!**")
+        return await event.edit("**É uma operação perigosa! Não é permitido!**")
 
     if len(code.splitlines()) <= 5:
         codepre = code
@@ -123,13 +123,13 @@ async def run(event):
                 event.chat_id,
                 "output.txt",
                 reply_to=event.id,
-                caption="**Output too large, sending as file...**",
+                caption="**Resultado muito grande, enviando como arquivo...**",
             )
             return remove("output.txt")
-        await event.edit(f"**Query:**\n`{codepre}`\n\n**Result:**\n`{result}`")
+        await event.edit(f"**Busca:**\n`{codepre}`\n\n**Resultado:**\n`{result}`")
     else:
         await event.edit(
-            f"**Query:**\n`{codepre}`\n\n**Result:**\n`No result returned/False`"
+            f"**Busca:**\n`{codepre}`\n\n**Resultado:**\n`Nenhum resultado obtido/Falso`"
         )
 
 
@@ -139,13 +139,13 @@ async def terminal_runner(event):
     command = event.pattern_match.group(1)
 
     if event.is_channel and not event.is_group:
-        return await event.edit("**Term commands aren't permitted on channels!**")
+        return await event.edit("**Comandos de terminal não são permitidos em canais!**")
 
     if not command:
-        return await event.edit("**Give a command or use .help term for an example.**")
+        return await event.edit("**Dê um comando ou use .help term para exemplos.**")
 
     if command in ("userbot.session", "config.env"):
-        return await event.edit("**That's a dangerous operation! Not permitted!**")
+        return await event.edit("**É uma operação perigosa! Não é permitido!**")
 
     process = await asyncio.create_subprocess_shell(
         command, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.STDOUT
@@ -163,11 +163,11 @@ async def terminal_runner(event):
             event.chat_id,
             "output.txt",
             reply_to=event.id,
-            caption="**Output too large, sending as file...**",
+            caption="**Resultado muito grande, enviando como arquivo...**",
         )
         return remove("output.txt")
 
-    await event.edit(f"**Command:**\n`{command}`\n\n**Result:**\n`{result}`")
+    await event.edit(f"**Comando:**\n`{command}`\n\n**Resultado:**\n`{result}`")
 
 
 CMD_HELP.update(
@@ -176,10 +176,10 @@ CMD_HELP.update(
         "`.eval return 2 + 3`\n"
         "`.eval print(event)`\n"
         "`.eval await event.reply('Ender')`\n"
-        "\nUsage: Evaluate Python expressions in the running script args.",
+        "\n**Uso:** Avalie as expressões Python nos args do script em execução.",
         "exec": "`.exec print('hello')`"
-        "\nUsage: Execute small python scripts in subprocess.",
+        "\n**Uso:** Execute pequenos scripts python em subprocessoss.",
         "term": "`.term <cmd>`\n"
-        "Usage: Run bash commands and scripts on your server.",
+        "Uso: Execute comandos e scripts bash em seu servidor.",
     }
 )

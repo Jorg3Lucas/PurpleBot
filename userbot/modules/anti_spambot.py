@@ -80,10 +80,10 @@ async def ANTI_SPAMBOTS(welcm):
                     check_user = await welcm.client.get_entity(user_id)
 
                     # DEBUGGING. LEAVING IT HERE FOR SOME TIME ###
-                    print(f"User Joined: {check_user.first_name} [ID: {check_user.id}]")
+                    print(f"Novo usuário: {check_user.first_name} [ID: {check_user.id}]")
                     print(f"Chat: {welcm.chat.title}")
-                    print(f"Time: {join_time}")
-                    print(f"Message Sent: {message.text}\n\n[Time: {message_date}]")
+                    print(f"Horário: {join_time}")
+                    print(f"Mensagem enviada: {message.text}\n\n[Horário: {message_date}]")
                     ##############################################
 
                     try:
@@ -93,27 +93,27 @@ async def ANTI_SPAMBOTS(welcm):
                         data = r.json()
                     except BaseException:
                         print(
-                            "CAS check failed, falling back to legacy anti_spambot behaviour."
+                            "Falha na verificação do CAS, voltando a verificação anti_spambot antiga."
                         )
                         data = None
 
                     if data and data["ok"]:
-                        reason = f"[Banned by Combot Anti Spam](https://cas.chat/query?u={check_user.id})"
+                        reason = f"[Banido por Combot Anti Spam](https://cas.chat/query?u={check_user.id})"
                         spambot = True
                     elif "t.cn/" in message.text:
-                        reason = "Match on `t.cn` URLs"
+                        reason = "Resultado em `t.cn` URLs"
                         spambot = True
                     elif "t.me/joinchat" in message.text:
-                        reason = "Potential Promotion Message"
+                        reason = "Mensagem de promoção em potencial"
                         spambot = True
                     elif message.fwd_from:
-                        reason = "Forwarded Message"
+                        reason = "Mensagem encaminhada"
                         spambot = True
                     elif "?start=" in message.text:
                         reason = "Telegram bot `start` link"
                         spambot = True
                     elif "bit.ly/" in message.text:
-                        reason = "Match on `bit.ly` URLs"
+                        reason = "Resultado em `bit.ly` URLs"
                         spambot = True
                     else:
                         if (
@@ -128,11 +128,11 @@ async def ANTI_SPAMBOTS(welcm):
                             )
                             and users.last_name == "Bot"
                         ):
-                            reason = "Known spambot"
+                            reason = "Spambot verificado"
                             spambot = True
 
                     if spambot:
-                        print(f"Potential Spam Message: {message.text}")
+                        print(f"Possível mensagem de spam: {message.text}")
                         await message.delete()
                         break
 
@@ -146,9 +146,9 @@ async def ANTI_SPAMBOTS(welcm):
                     if ANTI_SPAMBOT_SHOUT:
                         await welcm.reply(
                             "@admins\n"
-                            "**Anti spambot detector!\n"
-                            "This user matches my algorithms as a spambot!**"
-                            f"Reason: {reason}"
+                            "**Detector anti-spambot!\n"
+                            "Este usuário foi identificado em meus algoritmos como um spambot!**"
+                            f"Motivo: {reason}"
                         )
                         kicked = False
                         reported = True
@@ -156,10 +156,10 @@ async def ANTI_SPAMBOTS(welcm):
                     try:
 
                         await welcm.reply(
-                            "**Potential spambot detected!**\n"
-                            f"**Reason:** {reason}\n"
-                            "Kicking away for now, will log the ID.\n"
-                            f"**User:** [{check_user.first_name}](tg://user?id={check_user.id})"
+                            "**Spambot potencial detectado!**\n"
+                            f"**Motivo:** {reason}\n"
+                            "Removendo, ID registrado.\n"
+                            f"**Usuário:** [{check_user.first_name}](tg://user?id={check_user.id})"
                         )
 
                         await welcm.client.kick_participant(
@@ -172,9 +172,9 @@ async def ANTI_SPAMBOTS(welcm):
                         if ANTI_SPAMBOT_SHOUT:
                             await welcm.reply(
                                 "@admins\n"
-                                "**Anti spambot detector!\n"
-                                "This user matches my algorithms as a spambot!**"
-                                f"Reason: {reason}"
+                                "**Detector anti-spambot!\n"
+                                "Este usuário foi identificado em meus algoritmos como um spambot!**"
+                                f"Motivo: {reason}"
                             )
                             kicked = False
                             reported = True
@@ -183,12 +183,12 @@ async def ANTI_SPAMBOTS(welcm):
                     await welcm.client.send_message(
                         BOTLOG_CHATID,
                         "#ANTI_SPAMBOT REPORT\n"
-                        f"USER: [{check_user.first_name}](tg://user?id={check_user.id})\n"
-                        f"USER ID: `{check_user.id}`\n"
+                        f"USUÁRIO: [{check_user.first_name}](tg://user?id={check_user.id})\n"
+                        f"ID: `{check_user.id}`\n"
                         f"CHAT: {welcm.chat.title}\n"
                         f"CHAT ID: `{welcm.chat_id}`\n"
-                        f"REASON: {reason}\n"
-                        f"MESSAGE:\n\n{message.text}",
+                        f"MOTIVO: {reason}\n"
+                        f"MENSAGEM:\n\n{message.text}",
                     )
     except ValueError:
         pass
@@ -196,8 +196,8 @@ async def ANTI_SPAMBOTS(welcm):
 
 CMD_HELP.update(
     {
-        "anti_spambot": "If enabled in config.env or env var,"
-        "\nthis module will ban(or inform the admins of the group about) the"
-        "\nspammer(s) if they match the userbot's anti-spam algorithm."
+        "anti_spambot": "Se habilitado em config.env ou ConfigVar,"
+        "\neste módulo irá banir(ou informar os administradores do grupo sobre) o"
+        "\nspammer(s) se eles corresponderem ao algoritmo anti-spam do userbot."
     }
 )

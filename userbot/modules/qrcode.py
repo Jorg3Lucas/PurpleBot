@@ -48,7 +48,7 @@ async def parseqr(qr_e):
     if not t_response:
         LOGS.info(e_response)
         LOGS.info(t_response)
-        return await qr_e.edit("**Failed to decode.**")
+        return await qr_e.edit("**Falha ao decodificar.**")
     soup = BeautifulSoup(t_response, "html.parser")
     qr_contents = soup.find_all("pre")[0].text
     await qr_e.edit(qr_contents)
@@ -57,9 +57,9 @@ async def parseqr(qr_e):
 @register(pattern=r"\.barcode(?: |$)([\s\S]*)", outgoing=True)
 async def bq(event):
     """ For .barcode command, genrate a barcode containing the given content. """
-    await event.edit("**Processing...**")
+    await event.edit("**Processando...**")
     input_str = event.pattern_match.group(1)
-    message = "**Syntax:** `.barcode <long text to include>`"
+    message = "**Sintaxe:** `.barcode <texto longo para incluir>`"
     reply_msg_id = event.message.id
     if input_str:
         message = input_str
@@ -76,7 +76,7 @@ async def bq(event):
         else:
             message = previous_message.message
     else:
-        return event.edit("**Syntax:** `.barcode <long text to include>`")
+        return event.edit("**Sintaxe:** `.barcode <texto longo para incluir>`")
 
     bar_code_type = "code128"
     try:
@@ -93,7 +93,7 @@ async def bq(event):
 async def make_qr(makeqr):
     """ For .makeqr command, make a QR Code containing the given content. """
     input_str = makeqr.pattern_match.group(1)
-    message = "**Syntax:** `.makeqr <long text to include>`"
+    message = "**Sintaxe:** `.makeqr <texto longo para incluir>`"
     reply_msg_id = None
     if input_str:
         message = input_str
@@ -129,13 +129,13 @@ async def make_qr(makeqr):
 
 CMD_HELP.update(
     {
-        "qr": ">`.makeqr <content>`"
-        "\nUsage: Make a QR Code from the given content."
-        "\nExample: .makeqr www.google.com"
-        "\nNote: use `.decode <reply to barcode/qrcode>` to get decoded content.",
-        "barcode": ">`.barcode <content>`"
-        "\nUsage: Make a BarCode from the given content."
-        "\nExample: .barcode www.google.com"
-        "\nNote: use `.decode <reply to barcode/qrcode>` to get decoded content.",
+        "qr": ">`.makeqr <conteúdo>`"
+        "\n**Uso:** Faça um código QR a partir do conteúdo fornecido."
+        "\nExemplo: .makeqr www.google.com"
+        "\nNota: use `.decode <responda ao código de barras/qrcode>` para obter conteúdo decodificado.",
+        "barcode": ">`.barcode <conteúdo>`"
+        "\n**Uso:** Faça um código de barras a partir do conteúdo fornecido."
+        "\nExemplo: .barcode www.google.com"
+        "\nNote: use `.decode <responda ao código de barras/qrcode>` para obter conteúdo decodificado.",
     }
 )

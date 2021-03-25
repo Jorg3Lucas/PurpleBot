@@ -31,7 +31,7 @@ from userbot.utils.FastTelethon import download_file, upload_file
 @register(pattern=r"\.download(?: |$)(.*)", outgoing=True)
 async def download(target_file):
     """ For .download command, download files to the userbot's server. """
-    await target_file.edit("**Processing...**")
+    await target_file.edit("**Processando...**")
     input_str = target_file.pattern_match.group(1)
     replied = await target_file.get_reply_message()
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
@@ -52,7 +52,7 @@ async def download(target_file):
         try:
             url = get(url).url
         except BaseException:
-            return await target_file.edit("**This is not a valid link.**")
+            return await target_file.edit("**Este não é um link válido.**")
         downloaded_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name
         downloader = SmartDL(url, downloaded_file_name, progress_bar=False)
         downloader.start(blocking=False)
@@ -75,11 +75,11 @@ async def download(target_file):
             estimated_total_time = downloader.get_eta(human=True)
             try:
                 current_message = (
-                    f"**Name:** `{file_name}`\n"
+                    f"**Nome:** `{file_name}`\n"
                     f"\n**{status}...** | {progress_str}"
-                    f"\n{humanbytes(downloaded)} of {humanbytes(total_length)}"
+                    f"\n{humanbytes(downloaded)} de {humanbytes(total_length)}"
                     f" @ {humanbytes(speed)}"
-                    f"\n**ETA:** {estimated_total_time}"
+                    f"\n**Tempo Estimado:** {estimated_total_time}"
                 )
 
                 if round(diff % 15.00) == 0 and current_message != display_message:
@@ -89,13 +89,13 @@ async def download(target_file):
                 LOGS.info(str(e))
         if downloader.isSuccessful():
             await target_file.edit(
-                f"**Downloaded to** `{downloaded_file_name}` **successfully!**"
+                f"**Baixado para** `{downloaded_file_name}` **com sucesso!**"
             )
         else:
-            await target_file.edit(f"**Incorrect URL**\n{url}")
+            await target_file.edit(f"**URL incorreto**\n{url}")
     elif replied:
         if not replied.media:
-            return await target_file.edit("**Reply to file or media.**")
+            return await target_file.edit("**Responda a mídia ou arquivo.**")
         try:
             media = replied.media
             if hasattr(media, "document"):
@@ -141,14 +141,14 @@ async def download(target_file):
         else:
             try:
                 await target_file.edit(
-                    f"**Downloaded to** `{result.name}` **in {dl_time} seconds.**"
+                    f"**Baixado para ** `{result.name}` **em {dl_time} segundos.**"
                 )
             except AttributeError:
                 await target_file.edit(
-                    f"**Downloaded to** `{result}` **in {dl_time} seconds.**"
+                    f"**Baixado para** `{result}` **em {dl_time} segundos.**"
                 )
     else:
-        await target_file.edit("**See** `.help download` **for more info.**")
+        await target_file.edit("**Veja** `.help download` **para mais informações.**")
 
 
 async def get_video_thumb(file, output):
@@ -164,7 +164,7 @@ async def get_video_thumb(file, output):
 
 @register(pattern=r"^\.upload (.*)", outgoing=True)
 async def upload(event):
-    await event.edit("**Processing...**")
+    await event.edit("**Processando...**")
     input_str = event.pattern_match.group(1)
     if os.path.exists(input_str):
         if os.path.isfile(input_str):
@@ -234,7 +234,7 @@ async def upload(event):
             )
             if thumb is not None:
                 os.remove(thumb)
-            await event.edit(f"**Uploaded successfully in {up_time} seconds.**")
+            await event.edit(f"**Enviado com sucesso em {up_time} segundos.**")
         elif os.path.isdir(input_str):
             start_time = datetime.now()
             lst_files = []
@@ -242,13 +242,13 @@ async def upload(event):
                 for file in files:
                     lst_files.append(os.path.join(root, file))
             if not lst_files:
-                return await event.edit(f"`{input_str}` **is empty.**")
-            await event.edit(f"**Found** `{len(lst_files)}` **files. Uploading...**")
+                return await event.edit(f"`{input_str}` **está vazia.**")
+            await event.edit(f"**Achados** `{len(lst_files)}` **arquivos. Enviando...**")
             for files in sorted(lst_files):
                 file_name = os.path.basename(files)
                 thumb = None
                 attributes = []
-                msg = await event.reply(f"**Uploading** `{files}`**...**")
+                msg = await event.reply(f"**Enviando** `{files}`**...**")
                 with open(files, "rb") as f:
                     result = await upload_file(
                         client=event.client,
@@ -310,20 +310,20 @@ async def upload(event):
             await event.delete()
             up_time = (datetime.now() - start_time).seconds
             await event.respond(
-                f"**Uploaded {len(lst_files)} files in** `{input_str}` **folder "
-                f"in {up_time} seconds.**"
+                f"**Enviados {len(lst_files)} arquivos para a pasta** `{input_str}` "
+                f"**em {up_time} segundos.**"
             )
     else:
-        await event.edit("**Error: File/Folder not found**")
+        await event.edit("**Erro: arquivo/pasta não encontrado**")
 
 
 CMD_HELP.update(
     {
-        "download": ">`.download` <link> | <filename> (optional)"
-        "\nUsage: Downloads file from url to the server."
-        "\n\n>`.download` <reply to file>"
-        "\nUsage: Downloads file from the replied file/media."
-        "\n\n>`.upload` <file/folder path in server>"
-        "\nUsage: Uploads a locally stored file/folder to the chat."
+        "download": ">`.download` <link> | <nome do arquivo> (opcional)"
+        "\n**Uso:** Baixa o arquivo do url para o servidor."
+        "\n\n>`.download` <responder ao arquivo>"
+        "\n**Uso:** Faz o download do arquivo do arquivo/mídia respondido."
+        "\n\n>`.upload` <arquivo/caminho da pasta no servidor>"
+        "\n**Uso:** Carrega um arquivo/pasta armazenado localmente para o bate-papo."
     }
 )

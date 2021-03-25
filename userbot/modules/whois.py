@@ -22,7 +22,7 @@ from userbot.events import register
 async def who(event):
 
     await event.edit(
-        "**Sit tight while I steal some data from the Global Network Zone...**"
+        "`Espere enquanto eu roubo alguns dados da **Zona de Rede Global**...`"
     )
 
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
@@ -31,13 +31,13 @@ async def who(event):
     replied_user = await get_user(event)
     if replied_user is None:
         return await event.edit(
-            "**Well that's an anonymous admin, good luck figuring out which one!**"
+            "**Bem, esse é um administrador anônimo, boa sorte para descobrir qual deles!**"
         )
 
     try:
         photo, caption = await fetch_info(replied_user, event)
     except AttributeError:
-        return await event.edit("**Couldn't fetch the info of this user.**")
+        return await event.edit("**Não foi possível buscar as informações deste usuário.**")
 
     message_id_to_reply = event.message.reply_to_msg_id
 
@@ -106,7 +106,7 @@ async def fetch_info(replied_user, event):
         )
     )
     replied_user_profile_photos_count = (
-        "Person needs help with uploading profile picture."
+        "A pessoa precisa de ajuda para fazer upload de fotos do perfil."
     )
     try:
         replied_user_profile_photos_count = replied_user_profile_photos.count
@@ -118,7 +118,7 @@ async def fetch_info(replied_user, event):
     try:
         dc_id, _ = get_input_location(replied_user.profile_photo)
     except Exception as e:
-        dc_id = "Couldn't fetch DC ID!"
+        dc_id = "Não foi possível buscar o DC ID!"
         str(e)
     common_chat = replied_user.common_chats_count
     username = replied_user.user.username
@@ -132,27 +132,27 @@ async def fetch_info(replied_user, event):
     first_name = (
         first_name.replace("\u2060", "")
         if first_name
-        else ("This User has no First Name")
+        else ("Este usuário não tem nome")
     )
     last_name = (
-        last_name.replace("\u2060", "") if last_name else ("This User has no Last Name")
+        last_name.replace("\u2060", "") if last_name else ("Este usuário não tem sobrenome")
     )
-    username = f"@{username}" if username else ("This User has no Username")
-    user_bio = "This User has no About" if not user_bio else user_bio
+    username = f"@{username}" if username else ("Este usuário não tem nome de usuário")
+    user_bio = "Este usuário não tem uma bio" if not user_bio else user_bio
 
-    caption = "<b>USER INFO:</b>\n\n"
-    caption += f"First Name: {first_name}\n"
-    caption += f"Last Name: {last_name}\n"
-    caption += f"Username: {username}\n"
-    caption += f"Data Centre ID: {dc_id}\n"
-    caption += f"Number of Profile Pics: {replied_user_profile_photos_count}\n"
-    caption += f"Is Bot: {is_bot}\n"
-    caption += f"Is Restricted: {restricted}\n"
-    caption += f"Is Verified by Telegram: {verified}\n"
-    caption += f"ID: <code>{user_id}</code>\n\n"
-    caption += f"Bio: \n<code>{user_bio}</code>\n\n"
-    caption += f"Common Chats with this user: {common_chat}\n"
-    caption += "Permanent Link To Profile: "
+    caption = "<b>INFORMAÇÃO DE USUÁRIO:</b>\n\n"
+    caption += f"🗣 Primeiro nome: {first_name}\n"
+    caption += f"🗣 Último nome: {last_name}\n"
+    caption += f"👤 Nome do usuário: {username}\n"
+    caption += f"🏢 Data Centre ID: {dc_id}\n"
+    caption += f"🖼 Número de fotos do perfil: {replied_user_profile_photos_count}\n"
+    caption += f"🤖 É bot: {is_bot}\n"
+    caption += f"🚫 É restrito: {restricted}\n"
+    caption += f"✅ É verificado pelo Telegram: {verified}\n"
+    caption += f"🕵 ID: <code>{user_id}</code>\n\n"
+    caption += f"📝 Bio: \n<code>{user_bio}</code>\n\n"
+    caption += f"👥 Bate-papos comuns com este usuário: {common_chat}\n"
+    caption += f"🔗 Link permanente de perfil: "
     caption += f'<a href="tg://user?id={user_id}">{first_name}</a>'
 
     return photo, caption
@@ -160,7 +160,7 @@ async def fetch_info(replied_user, event):
 
 CMD_HELP.update(
     {
-        "whois": ">`.whois <username> or reply to someones text with .whois`"
-        "\nUsage: Gets info of an user."
+        "whois": ">`.whois <nome de usuário> ou responda ao texto de alguém com .whois`"
+        "\n**Uso:** Obtém informações de um usuário."
     }
 )

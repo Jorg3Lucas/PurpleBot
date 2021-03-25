@@ -15,17 +15,17 @@ async def help(event):
     args = event.pattern_match.group(1).lower()
     # Prevent Channel Bug to get any information and command from all modules
     if event.is_channel and not event.is_group:
-        await event.edit("`Help command isn't permitted on channels`")
+        await event.edit("`O comando de ajuda não é permitido em canais`")
         return
     if args:
         if args in CMD_HELP:
             await event.edit(str(CMD_HELP[args]))
         else:
-            await event.edit("Please specify a valid module name.")
+            await event.edit("Especifique um nome de módulo válido.")
     else:
-        final = "**List of all loaded module(s)**\n\
-                 \nSpecify which module do you want help for! \
-                 \n**Usage:** `.help` <module name>\n\n"
+        final = "**Lista de todos os módulos carregados**\n\
+                 \nEspecifique para qual módulo você deseja ajuda! \
+                 \n**Uso:** `.help` <nome do módulo>\n\n"
 
         temp = "".join(str(i) + " " for i in CMD_HELP)
         temp = sorted(temp.split())

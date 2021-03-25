@@ -21,14 +21,14 @@ async def kbg(remob):
     """ For .rbg command, Remove Image Background. """
     if REM_BG_API_KEY is None:
         return await remob.edit(
-            "**Error: Remove.BG API key missing! Add it to environment vars or config.env.**"
+            "**Erro: chave da API Remove.BG faltante! Adicione-o as configvars ou config.env.**"
         )
     input_str = remob.pattern_match.group(1)
     message_id = remob.message.id
     if remob.reply_to_msg_id:
         message_id = remob.reply_to_msg_id
         reply_message = await remob.get_reply_message()
-        await remob.edit("**Processing...**")
+        await remob.edit("**Processando...**")
         try:
             if isinstance(
                 reply_message.media, MessageMediaPhoto
@@ -36,20 +36,20 @@ async def kbg(remob):
                 downloaded_file_name = await remob.client.download_media(
                     reply_message, TEMP_DOWNLOAD_DIRECTORY
                 )
-                await remob.edit("**Removing background from this image...**")
+                await remob.edit("**Removendo fundo desta imagem...**")
                 output_file_name = await ReTrieveFile(downloaded_file_name)
                 os.remove(downloaded_file_name)
             else:
-                await remob.edit("**How do I remove the background from this?**")
+                await remob.edit("**Como faço para remover o fundo deste?**")
         except Exception as e:
             return await remob.edit(str(e))
     elif input_str:
         await remob.edit(
-            f"**Removing background from online image hosted at**\n{input_str}"
+            f"**Removendo plano de fundo de imagem online hospedada em**\n{input_str}"
         )
         output_file_name = await ReTrieveURL(input_str)
     else:
-        return await remob.edit("**I need something to remove the background from.**")
+        return await remob.edit("**Eu preciso de algo para remover o fundo.**")
     contentType = output_file_name.headers.get("content-type")
     if "image" in contentType:
         with io.BytesIO(output_file_name.content) as remove_bg_image:
@@ -64,7 +64,7 @@ async def kbg(remob):
             await remob.delete()
     else:
         await remob.edit(
-            "**Error (Invalid API key, I guess ?)**\n`{}`".format(
+            "**Erro (Chave de API inválida, eu acho?)**\n`{}`".format(
                 output_file_name.content.decode("UTF-8")
             )
         )
@@ -104,7 +104,7 @@ async def ReTrieveURL(input_url):
 
 CMD_HELP.update(
     {
-        "rbg": ">`.rbg <Link to Image> or reply to any image (Warning: does not work on stickers.)`"
-        "\nUsage: Removes the background of images, using remove.bg API"
+        "rbg": ">`.rbg <Link para a imagem> ou responda a qualquer imagem (Aviso: não funciona em stickers.)`"
+        "\n**Uso:** Remove o fundo das imagens, usando a API remove.bg"
     }
 )

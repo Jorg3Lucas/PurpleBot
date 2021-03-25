@@ -21,16 +21,16 @@ if GENIUS is not None:
 
 @register(outgoing=True, pattern=r"^\.lyrics (?:(now)|(.*) - (.*))")
 async def lyrics(lyric):
-    await lyric.edit("**Processing...**")
+    await lyric.edit("**Processando...**")
 
     if GENIUS is None:
-        return await lyric.edit("**Add Genius access token to config vars.**")
+        return await lyric.edit("**Adicionar token de acesso Genius a configvars.**")
 
     if lyric.pattern_match.group(1) == "now":
         playing = User(LASTFM_USERNAME, lastfm).get_now_playing()
         if playing is None:
             return await lyric.edit(
-                "**LastFM says you're not playing anything right now.**"
+                "**LastFM diz que você não está tocando nada no momento.**"
             )
         artist = playing.get_artist()
         song = playing.get_title()
@@ -38,31 +38,31 @@ async def lyrics(lyric):
         artist = lyric.pattern_match.group(2)
         song = lyric.pattern_match.group(3)
 
-    await lyric.edit(f"**Searching lyrics for** `{artist} - {song}`**...**")
+    await lyric.edit(f"**Procurando letras por** `{artist} - {song}`**...**")
     songs = genius.search_song(song, artist)
 
     if songs is None:
         return await lyric.edit(
-            f"**Couldn't find lyrics for** `{artist} - {song}`**.**"
+            f"**Não foi possível encontrar letras para** `{artist} - {song}`**.**"
         )
 
     if len(songs.lyrics) > 4096:
-        await lyric.edit("**Uploading lyrics as file...**")
+        await lyric.edit("**Carregando letras como arquivo...**")
         with open("lyrics.txt", "w+") as f:
-            f.write(f"Search query: \n{artist} - {song}\n\n{songs.lyrics}")
+            f.write(f"Consulta de pesquisa: \n{artist} - {song}\n\n{songs.lyrics}")
         await lyric.client.send_file(lyric.chat_id, "lyrics.txt", reply_to=lyric.id)
         os.remove("lyrics.txt")
     else:
         await lyric.edit(
-            f"**Search query**:\n`{artist}` - `{song}`" f"\n\n{songs.lyrics}"
+            f"**Consulta de pesquisa**:\n`{artist}` - `{song}`" f"\n\n{songs.lyrics}"
         )
 
 
 CMD_HELP.update(
     {
-        "lyrics": ">`.lyrics` **<artist name> - <song name>**"
-        "\nUsage: Gets lyrics for given song."
+        "lyrics": ">`.lyrics` **<nome do artista> - <nome da música>**"
+        "\n**Uso:** Obtém a letra de determinada música."
         "\n\n>`.lyrics now`"
-        "\nUsage: Gets lyrics for current LastFM scrobble."
+        "\n**Uso:** Obtém a letra do scrobble LastFM atual."
     }
 )

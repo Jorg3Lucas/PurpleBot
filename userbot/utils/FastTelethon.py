@@ -253,7 +253,7 @@ class ParallelTransferrer:
             )
         )
         if not self.auth_key:
-            log.debug(f"Exporting auth to DC {self.dc_id}")
+            log.debug(f"Exportando autenticação para DC {self.dc_id}")
             auth = await self.client(ExportAuthorizationRequest(self.dc_id))
             self.client._init_request.query = ImportAuthorizationRequest(
                 id=auth.id, bytes=auth.bytes
@@ -270,7 +270,7 @@ class ParallelTransferrer:
         connection_count: Optional[int] = None,
     ) -> tuple[int, int, bool]:
         connection_count = connection_count or self._get_connection_count(file_size)
-        print("init_upload count is ", connection_count)
+        print("contagem do init_upload é ", connection_count)
         part_size = (part_size_kb or utils.get_appropriated_part_size(file_size)) * 1024
         part_count = (file_size + part_size - 1) // part_size
         is_large = file_size > 10 * 1024 * 1024
@@ -292,12 +292,12 @@ class ParallelTransferrer:
         connection_count: Optional[int] = None,
     ) -> AsyncGenerator[bytes, None]:
         connection_count = connection_count or self._get_connection_count(file_size)
-        print("download count is ", connection_count)
+        print("contagem de download é ", connection_count)
 
         part_size = (part_size_kb or utils.get_appropriated_part_size(file_size)) * 1024
         part_count = math.ceil(file_size / part_size)
         log.debug(
-            "Starting parallel download: "
+            "Iniciando download paralelo: "
             f"{connection_count} {part_size} {part_count} {file!s}"
         )
         await self._init_download(connection_count, file, part_count, part_size)
@@ -311,9 +311,9 @@ class ParallelTransferrer:
                     break
                 yield data
                 part += 1
-                log.debug(f"Part {part} downloaded")
+                log.debug(f"Parte {part} baixada")
 
-        log.debug("Parallel download finished, cleaning up connections")
+        log.debug("Download paralelo concluído, limpando conexões")
         await self._cleanup()
 
 

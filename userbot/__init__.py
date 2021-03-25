@@ -42,8 +42,8 @@ LOGS = getLogger(__name__)
 
 if sys.version_info[0] < 3 or sys.version_info[1] < 8:
     LOGS.info(
-        "You MUST have a python version of at least 3.8."
-        "Multiple features depend on this. Bot quitting."
+        "Você DEVE ter uma versão python de pelo menos 3.8."
+        "Vários recursos dependem disso. Bot finalizando."
     )
     sys.exit(1)
 
@@ -55,7 +55,7 @@ CONFIG_CHECK = (
 
 if CONFIG_CHECK:
     LOGS.info(
-        "Please remove the line mentioned in the first hashtag from the config.env file"
+        "Remova a linha mencionada na primeira hashtag do arquivo config.env"
     )
     sys.exit(1)
 
@@ -81,7 +81,7 @@ HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME") or None
 HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY") or None
 
 # Custom (forked) repo URL and BRANCH for updater.
-UPSTREAM_REPO_URL = "https://github.com/KenHV/KensurBot.git"
+UPSTREAM_REPO_URL = "https://github.com/thewhiteharlot/PurpleBotKEN.git"
 UPSTREAM_REPO_BRANCH = "master"
 
 # Console verbose logging
@@ -95,6 +95,9 @@ OCR_SPACE_API_KEY = os.environ.get("OCR_SPACE_API_KEY") or None
 
 # Default .alive name
 ALIVE_NAME = str(os.environ.get("ALIVE_NAME")) or None
+
+# Default .alive logo
+ALIVE_LOGO = os.environ.get("ALIVE_LOGO") or None
 
 # remove.bg API key
 REM_BG_API_KEY = os.environ.get("REM_BG_API_KEY") or None
@@ -163,8 +166,8 @@ GENIUS = os.environ.get("GENIUS_ACCESS_TOKEN") or None
 # Uptobox
 USR_TOKEN = os.environ.get("USR_TOKEN_UPTOBOX") or None
 
-# KensurBot version
-KENSURBOT_VERSION = "1.1"
+# PurpleBot version
+PURPLEBOT_VERSION = "5.0"
 
 # 'bot' variable
 if STRING_SESSION:
@@ -185,13 +188,13 @@ else:
 async def check_botlog_chatid():
     if not BOTLOG_CHATID and LOGSPAMMER:
         LOGS.info(
-            "You must set up the BOTLOG_CHATID variable in the config.env or environment variables, for the private error log storage to work."
+            "Você deve configurar a variável BOTLOG_CHATID nas variáveis config.env, para que o registro dos logs de erro funcione."
         )
         sys.exit(1)
 
     elif not BOTLOG_CHATID and BOTLOG:
         LOGS.info(
-            "You must set up the BOTLOG_CHATID variable in the config.env or environment variables, for the userbot logging feature to work."
+            "Você deve configurar a variável BOTLOG_CHATID nas variáveis config.env, para que o recurso de registro do userbot funcione."
         )
         sys.exit(1)
 
@@ -201,8 +204,8 @@ async def check_botlog_chatid():
     entity = await bot.get_entity(BOTLOG_CHATID)
     if entity.default_banned_rights.send_messages:
         LOGS.info(
-            "Your account doesn't have rights to send messages to BOTLOG_CHATID "
-            "group. Check if you typed the Chat ID correctly."
+            "Sua conta não tem permissão para enviar mensagens para BOTLOG_CHATID. "
+            " Verifique se você digitou o ID do bate-papo corretamente."
         )
         sys.exit(1)
 
@@ -212,20 +215,21 @@ with bot:
         bot.loop.run_until_complete(check_botlog_chatid())
     except BaseException:
         LOGS.info(
-            "BOTLOG_CHATID environment variable isn't a "
-            "valid entity. Check your environment variables/config.env file."
+            "BOTLOG_CHATID não é uma variável válida "
+            " Verifique suas VARS ou arquivo config.env."
         )
         sys.exit(1)
 
 
 async def send_alive_status():
     if BOTLOG_CHATID and LOGSPAMMER:
-        DEFAULTUSER = ALIVE_NAME or "Set `ALIVE_NAME` ConfigVar!"
+        DEFAULTUSER = ALIVE_NAME or "Defina a ConfigVar `ALIVE_NAME`!"
         message = (
-            f"**KensurBot v{KENSURBOT_VERSION} is up and running!**\n\n"
-            f"**Telethon:** {version.__version__}\n"
-            f"**Python:** {python_version()}\n"
-            f"**User:** {DEFAULTUSER}"
+            f"👾 **PurpleBot**   ➡️  `{PURPLEBOT_VERSION}` \n"
+            f"⚙️ **Telethon**      ➡️  `{version.__version__}` \n"
+            f"🐍 **Python**         ➡️  `{python_version()}` \n"
+            f"👤 **Usuário**       ➡️   `{DEFAULTUSER}` "
+            "\n\n__Userbot iniciado__ ☑️"
         )
         await bot.send_message(BOTLOG_CHATID, message)
         return True

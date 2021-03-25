@@ -9,18 +9,18 @@ from userbot.events import register
 
 @register(outgoing=True, pattern=r"^\.df(:? |$)([1-8])?")
 async def _(fry):
-    await fry.edit("**Processing...**")
+    await fry.edit("**Em processamento...**")
     level = fry.pattern_match.group(2)
     if fry.fwd_from:
         return
 
     if not fry.reply_to_msg_id:
-        return await fry.edit("**Reply to a message containing an image!**")
+        return await fry.edit("**Responda a uma mensagem contendo uma imagem!**")
 
     reply_message = await fry.get_reply_message()
 
     if not reply_message.media:
-        return await fry.edit("**Reply to a message containing an image!**")
+        return await fry.edit("**Responda a uma mensagem contendo uma imagem!**")
 
     chat = "@image_deepfrybot"
     message_id_to_reply = fry.message.reply_to_msg_id
@@ -38,11 +38,11 @@ async def _(fry):
                 """ - don't spam notif - """
                 await bot.send_read_acknowledge(conv.chat_id)
             except YouBlockedUserError:
-                return await fry.reply("**Please unblock @image_deepfrybot.**")
+                return await fry.reply("**Desbloqueie @image_deepfrybot.**")
 
             if response.text.startswith("Forward"):
                 await fry.edit(
-                    "**Error: Whitelist @image_deepfrybot in your forward privacy settings.**"
+                    "**Erro: Permita @image_deepfrybot em suas configurações de privacidade de encaminhamento.**"
                 )
             else:
                 downloaded_file_name = await fry.client.download_media(
@@ -66,15 +66,15 @@ async def _(fry):
                         conv.chat_id, [msg.id, response.id, r.id, msg_level.id]
                     )
     except TimeoutError:
-        return await fry.edit("**Error:** @image_deepfrybot **is not responding.**")
+        return await fry.edit("**Errr:** @image_deepfrybot **não está respondendo.**")
     await fry.delete()
     return os.remove(downloaded_file_name)
 
 
 CMD_HELP.update(
     {
-        "deepfry": ">`.df` or >`.df [level(1-8)]`"
-        "\nUsage: deepfry image/sticker from the reply."
+        "deepfry": ">`.df` ou >`.df [level(1-8)]`"
+        "\n**Uso:** Frite a imagem/sticker da resposta."
         "\n@image_deepfrybot"
     }
 )

@@ -56,7 +56,7 @@ async def purgeme(delme):
 
     smsg = await delme.client.send_message(
         delme.chat_id,
-        "**Purge complete!** Purged " + str(count) + " messages.",
+        "**Limpeza completa!** Limpadas " + str(count) + " mensagens.",
     )
     await sleep(2)
     i = 1
@@ -72,7 +72,7 @@ async def delete_it(delme):
             await msg_src.delete()
             await delme.delete()
         except rpcbaseerrors.BadRequestError:
-            await delme.edit("**Well, I can't delete a message.**")
+            await delme.edit("**Bem, eu não posso deletar uma mensagem.**")
 
 
 @register(outgoing=True, pattern=r"^\.edit")
@@ -104,14 +104,14 @@ async def selfdestruct(destroy):
 
 CMD_HELP.update(
     {
-        "purge": ">`.purge`" "\nUsage: Purges all messages starting from the reply.",
+        "purge": ">`.purge`" "\n**Uso:** Limpa todas as mensagens a partir da resposta.",
         "purgeme": ">`.purgeme <x>`"
-        "\nUsage: Deletes x amount of your latest messages.",
-        "del": ">`.del`" "\nUsage: Deletes the message you replied to.",
+        "\n**Uso:** Exclui x quantidade de suas mensagens mais recentes.",
+        "del": ">`.del`" "\n**Uso:** Exclui a mensagem que você respondeu.",
         "edit": ">`.edit <newmessage>`"
-        "\nUsage: Replace your last message with <newmessage>.",
-        "sd": ">`.sd <x> <message>`"
-        "\nUsage: Creates a message that selfdestructs in x seconds."
-        "\n<x> should be a two digit value, 3rd digit and further digits will be taken as <message>.",
+        "\n**Uso:** Substitua sua última mensagem por <nova mensagem>.",
+        "sd": ">`.sd <x> <mensagem>`"
+        "\n**Uso:** Cria uma mensagem que se autodestrói em x segundos."
+        "\n<x> deve ser um valor de dois dígitos, o terceiro dígito e outros dígitos serão considerados como <mensagem>.",
     }
 )

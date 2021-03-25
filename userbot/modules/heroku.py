@@ -30,10 +30,10 @@ async def variable(var):
     exe = var.pattern_match.group(1)
     if app is None:
         await var.edit(
-            "**Please setup your** `HEROKU_APP_NAME` **and** `HEROKU_API_KEY`**.**"
+            "**Por favor configure seu** `HEROKU_APP_NAME` **e** `HEROKU_API_KEY`**.**"
         )
         return False
-    await var.edit("**Processing...**")
+    await var.edit("**Em processamento...**")
     variable = var.pattern_match.group(2)
     if exe == "get":
         if variable != "":
@@ -45,11 +45,11 @@ async def variable(var):
                         "**ConfigVar**:\n"
                         f"`{variable}` = `{heroku_var[variable]}`\n",
                     )
-                    await var.edit("**Check your botlog group.**")
+                    await var.edit("**Verifique o seu grupo de botlog.**")
                     return True
-                await var.edit("**Enable** `BOTLOG`**!**")
+                await var.edit("**Habilite** `BOTLOG`**!**")
                 return False
-            await var.edit("**Error: ConfigVar not found.**")
+            await var.edit("**Erro: ConfigVar não encontrado.**")
             return True
         else:
             configvars = heroku_var.to_dict()
@@ -60,24 +60,24 @@ async def variable(var):
                 await var.client.send_message(
                     BOTLOG_CHATID, "#CONFIGVARS\n\n" "**ConfigVars**:\n" f"{msg}"
                 )
-                await var.edit("**Check your botlog group.**")
+                await var.edit("**Verifique o seu grupo de botlog.**")
                 return True
-            await var.edit("**Enable** `BOTLOG`**!**")
+            await var.edit("**Habilite** `BOTLOG`**!**")
             return False
     elif exe == "del":
         if variable == "":
-            await var.edit("**Error: Give me a ConfigVar to delete!**")
+            await var.edit("**Erro: Dê-me um ConfigVar para excluir!**")
             return False
         if variable in heroku_var:
             if BOTLOG:
                 await var.client.send_message(
                     BOTLOG_CHATID,
-                    "#DELCONFIGVAR\n\n" "**Delete ConfigVar**:\n" f"`{variable}`",
+                    "#DELCONFIGVAR\n\n" "**Excluir ConfigVar**:\n" f"`{variable}`",
                 )
             await var.edit("**Deleted ConfigVar.**")
             del heroku_var[variable]
         else:
-            await var.edit("**Error: ConfigVar not found.**")
+            await var.edit("**Erro: ConfigVar não encontrado.**")
             return True
 
 
@@ -85,9 +85,9 @@ async def variable(var):
 async def set_var(var):
     if app is None:
         return await var.edit(
-            "**Please setup your** `HEROKU_APP_NAME` **and** `HEROKU_API_KEY`**.**"
+            "**Por favor configure seu** `HEROKU_APP_NAME` **e** `HEROKU_API_KEY`**.**"
         )
-    await var.edit("**Setting ConfigVar...**")
+    await var.edit("**Configurando ConfigVar...**")
     variable = var.pattern_match.group(1)
     value = var.pattern_match.group(2)
     if BOTLOG:
@@ -95,15 +95,15 @@ async def set_var(var):
             await var.client.send_message(
                 BOTLOG_CHATID,
                 "#SETCONFIGVAR\n\n"
-                "**Change ConfigVar**:\n"
+                "**Mudança de ConfigVar**:\n"
                 f"`{variable}` = `{value}`",
             )
         else:
             await var.client.send_message(
                 BOTLOG_CHATID,
-                "#ADDCONFIGVAR\n\n" "**Add ConfigVar**:\n" f"`{variable}` = `{value}`",
+                "#ADDCONFIGVAR\n\n" "**Adicionada ConfigVar**:\n" f"`{variable}` = `{value}`",
             )
-    await var.edit("**Successfully set ConfigVar.**")
+    await var.edit("**ConfigVar definida com sucesso.**")
     heroku_var[variable] = value
 
 
@@ -119,9 +119,9 @@ async def dyno_usage(dyno):
     """
     if app is None:
         return await dyno.edit(
-            "**Please setup your** `HEROKU_APP_NAME` **and** `HEROKU_API_KEY`**.**"
+            "** Configure o seu** `HEROKU_APP_NAME` **e** `HEROKU_API_KEY`**.**"
         )
-    await dyno.edit("**Processing...**")
+    await dyno.edit("**Em processamento...**")
     user_id = Heroku.account().id
     path = "/accounts/" + user_id + "/actions/get-quota"
     async with aiohttp.ClientSession() as session:
@@ -140,7 +140,7 @@ async def dyno_usage(dyno):
                 await dyno.client.send_message(
                     dyno.chat_id, f"`{r.reason}`", reply_to=dyno.id
                 )
-                await dyno.edit("**Error: Heroku is being Heroku.**")
+                await dyno.edit("**Erro: Heroku está sendo Heroku.**")
                 return False
             result = await r.json()
             quota = result["account_quota"]
@@ -166,9 +166,9 @@ async def dyno_usage(dyno):
             AppMinutes = math.floor(AppQuotaUsed % 60)
 
             await dyno.edit(
-                "**Heroku dyno hour stats for current month**\n\n"
-                f"**Usage ({app.name}):** {AppHours} hour(s), {AppMinutes} minute(s) - {AppPercentage}%\n"
-                f"**Remaining (total):** {hours} hour(s), {minutes} minute(s) - {percentage}%"
+                "**Estatísticas de horas do dinamômetro Heroku para o mês atual**\n\n"
+                f"**Uso ({app.name}):** {AppHours} hour(s), {AppMinutes} minute(s) - {AppPercentage}%\n"
+                f"**Remanescente (total):** {hours} hour(s), {minutes} minute(s) - {percentage}%"
             )
             return True
 
@@ -177,13 +177,13 @@ async def dyno_usage(dyno):
 async def _(dyno):
     if app is None:
         return await dyno.edit(
-            "**Please setup your** `HEROKU_APP_NAME` **and** `HEROKU_API_KEY`**.**"
+            "**Por favor configure seu** `HEROKU_APP_NAME` **e** `HEROKU_API_KEY`**.**"
         )
-    await dyno.edit("**Processing...**")
+    await dyno.edit("**Em processamento...**")
     with open("logs.txt", "w") as log:
         log.write(app.get_log())
     await dyno.client.send_file(
-        entity=dyno.chat_id, file="logs.txt", caption="**Heroku dyno logs**"
+        entity=dyno.chat_id, file="logs.txt", caption="**Logs do dinamômetro Heroku**"
     )
     await dyno.delete()
     return os.remove("logs.txt")
@@ -192,17 +192,17 @@ async def _(dyno):
 CMD_HELP.update(
     {
         "heroku": ">.`usage`"
-        "\nUsage: Shows Heroku dyno hour stats."
+        "\n**Uso:** Mostra estatísticas de hora do dinamômetro do Heroku."
         "\n\n>`.set var <configvar> <value>`"
-        "\nUsage: Adds new ConfigVar or updates existing ConfigVar."
-        "\nBot will restart after using this command."
-        "\n\n>`.get var <configvar>[optional]`"
-        "\nUsage: Shows current values for specified or all ConfigVars."
-        "\nMake sure to run the command on a private group if you don't have Botlog set up."
+        "\n**Uso:** Adiciona um novo ConfigVar ou atualiza o ConfigVar existente."
+        "\nO bot irá reiniciar após usar este comando."
+        "\n\n>`.get var <configvar>[opcional]`"
+        "\n**Uso:** Mostra os valores atuais para o especificado ou todos os ConfigVars."
+        "\nCertifique-se de executar o comando em um grupo privado se você não tiver o Botlog configurado."
         "\n\n>`.del var <configvar>`"
-        "\nUsage: Removes specified ConfigVar."
-        "\nBot will restart after using this command."
+        "\n**Uso:** Remove o ConfigVar especificado."
+        "\nO bot irá reiniciar após usar este comando."
         "\n\n>`.logs`"
-        "\nUsage: Retrieves Heroku dyno logs."
+        "\n**Uso:** Recupera registros do dinamômetro do Heroku."
     }
 )

@@ -35,9 +35,9 @@ async def progress(current, total, event, start, prog_type, is_cancelled=False):
         elapsed_time = round(diff)
         eta = round((total - current) / speed)
         if "upload" in prog_type.lower():
-            status = "Uploading"
+            status = "Enviando"
         elif "download" in prog_type.lower():
-            status = "Downloading"
+            status = "Baixando"
         else:
             status = "Status"
         progress_str = "**{}:** `[{}{}]` **{}%**".format(
@@ -49,10 +49,10 @@ async def progress(current, total, event, start, prog_type, is_cancelled=False):
 
         tmp = (
             f"{progress_str}\n"
-            f"{humanbytes(current)} of {humanbytes(total)}"
+            f"{humanbytes(current)} de {humanbytes(total)}"
             f" @ {humanbytes(speed)}\n"
-            f"**ETA:** {time_formatter(eta)}\n"
-            f"**Duration:** {time_formatter(elapsed_time)}"
+            f"**Tempo Estimado:** {time_formatter(eta)}\n"
+            f"**Duração:** {time_formatter(elapsed_time)}"
         )
         try:
             await event.edit(f"**{prog_type}**\n\n{tmp}")

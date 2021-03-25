@@ -47,7 +47,7 @@ async def on_snip_save(event):
     try:
         from userbot.modules.sql_helper.snips_sql import add_snip
     except AttributeError:
-        return await event.edit("**Running on Non-SQL mode!**")
+        return await event.edit("**Executando em modo não SQL!**")
     keyword = event.pattern_match.group(1)
     string = event.text.partition(keyword)[2]
     msg = await event.get_reply_message()
@@ -56,9 +56,9 @@ async def on_snip_save(event):
         if BOTLOG_CHATID:
             await event.client.send_message(
                 BOTLOG_CHATID,
-                f"#SNIP\nKEYWORD: {keyword}"
-                "\n\nThe following message is saved as the data for the snip, "
-                "please do NOT delete it!",
+                f"#SNIP\nPALAVRA-CHAVE: {keyword}"
+                "\n\nA seguinte mensagem é salva como os dados para o snip, "
+                "por favor, NÃO o exclua!",
             )
             msg_o = await event.client.forward_messages(
                 entity=BOTLOG_CHATID, messages=msg, from_peer=event.chat_id, silent=True
@@ -66,19 +66,19 @@ async def on_snip_save(event):
             msg_id = msg_o.id
         else:
             return await event.edit(
-                "**Saving snips with media requires the BOTLOG_CHATID to be set.**"
+                "**Salvar snips com mídia requer que BOTLOG_CHATID seja definido.**"
             )
     elif event.reply_to_msg_id and not string:
         rep_msg = await event.get_reply_message()
         string = rep_msg.text
-    success = "**Snip {} successfully. Use** `${}` **anywhere to get it**"
+    success = "**Snip {} com sucesso. Use** `${}` **em qualquer lugar para usá-lo**"
     try:
         if add_snip(keyword, string, msg_id) is False:
-            await event.edit(success.format("updated", keyword))
+            await event.edit(success.format("atualizado", keyword))
         else:
-            await event.edit(success.format("saved", keyword))
+            await event.edit(success.format("salvo", keyword))
     except UnmappedInstanceError:
-        return await event.edit(f"**Error: Snip** `{keyword}` **already exists.**")
+        return await event.edit(f"**Erro: Snip** `{keyword}` **já existe.**")
 
 
 @register(outgoing=True, pattern=r"^\.snips$")
@@ -87,13 +87,13 @@ async def on_snip_list(event):
     try:
         from userbot.modules.sql_helper.snips_sql import get_snips
     except AttributeError:
-        return await event.edit("**Running on Non-SQL mode!**")
+        return await event.edit("**Executando em modo não SQL!**")
 
-    message = "**No snips available right now.**"
+    message = "**Nenhum snip disponível no momento.**"
     all_snips = get_snips()
     for a_snip in all_snips:
-        if message == "**No snips available right now.**":
-            message = "**Available snips:**\n\n"
+        if message == "**Nenhum snip disponível no momento.**":
+            message = "**Snips disponíveis:**\n\n"
         message += f"`${a_snip.snip}`\n"
     await event.edit(message)
 
@@ -104,24 +104,24 @@ async def on_snip_delete(event):
     try:
         from userbot.modules.sql_helper.snips_sql import remove_snip
     except AttributeError:
-        return await event.edit("**Running on Non-SQL mode!**")
+        return await event.edit("**Executando em modo não SQL!**")
     name = event.pattern_match.group(1)
     if remove_snip(name) is True:
-        await event.edit(f"**Successfully deleted snip:** `{name}`")
+        await event.edit(f"**Snip excluído com sucesso:** `{name}`")
     else:
-        await event.edit(f"**Couldn't find snip:** `{name}`")
+        await event.edit(f"**Não foi possível encontrar o snip:** `{name}`")
 
 
 CMD_HELP.update(
     {
-        "snips": ">`$<snip_name>`"
-        "\nUsage: Gets the specified snip, anywhere."
-        "\n\n>`.snip <name> <data> or reply to a message with .snip <name>`"
-        "\nUsage: Saves the message as a snip (global note) with the name."
-        " (Works with pics, docs, and stickers too!)"
+        "snips": ">`$<´nome_do_snip>`"
+        "\n**Uso:** Obtém o snip especificado, em qualquer lugar."
+        "\n\n>`.snip <nome> <dados> ou responda a uma mensagem com .snip <nome>`"
+        "\n**Uso:** Salva a mensagem como um snip (nota global) com o nome."
+        " (Funciona com fotos, documentos e stickers também!)"
         "\n\n>`.snips`"
-        "\nUsage: Gets all saved snips."
-        "\n\n>`.remsnip <snip_name>`"
-        "\nUsage: Deletes the specified snip."
+        "\n**Uso:** Obtém todos os snips salvos."
+        "\n\n>`.remsnip <snip_nome>`"
+        "\n**Uso:** Exclui o recorte especificado."
     }
 )

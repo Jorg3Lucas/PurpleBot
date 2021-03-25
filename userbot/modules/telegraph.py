@@ -15,7 +15,7 @@ auth_url = r["auth_url"]
 @register(outgoing=True, pattern=r"^\.telegraph (media|text)$")
 async def telegraphs(graph):
     """ For .telegraph command, upload media & text to telegraph site. """
-    await graph.edit("**Processing...**")
+    await graph.edit("**Processando...**")
     if not graph.text[0].isalpha() and graph.text[0] not in ("/", "#", "@", "!"):
         if graph.fwd_from:
             return
@@ -32,19 +32,19 @@ async def telegraphs(graph):
                 end = datetime.now()
                 ms = (end - start).seconds
                 await graph.edit(
-                    f"**Downloaded to** `{downloaded_file_name}` **in** `{ms}` **seconds.**"
+                    f"**Baixado para** `{downloaded_file_name}` **em** `{ms}` **segundos.**"
                 )
                 if downloaded_file_name.endswith(".webp"):
                     resize_image(downloaded_file_name)
                 try:
                     media_urls = upload_file(downloaded_file_name)
                 except exceptions.TelegraphException as exc:
-                    await graph.edit("**Error:** " + str(exc))
+                    await graph.edit("**Erro:** " + str(exc))
                     os.remove(downloaded_file_name)
                 else:
                     os.remove(downloaded_file_name)
                     await graph.edit(
-                        f"**Successfully uploaded to** [telegra.ph](https://telegra.ph{media_urls[0]})**.**",
+                        f"**Enviado com sucesso para** [telegra.ph](https://telegra.ph{media_urls[0]})**.**",
                         link_preview=True,
                     )
             elif input_str == "text":
@@ -69,12 +69,12 @@ async def telegraphs(graph):
                     title_of_page, html_content=page_content
                 )
                 await graph.edit(
-                    f'**Successfully uploaded to** [telegra.ph](https://telegra.ph/{response["path"]})**.**',
+                    f'**Enviado com sucesso para** [telegra.ph](https://telegra.ph/{response["path"]})**.**',
                     link_preview=True,
                 )
         else:
             await graph.edit(
-                "**Reply to a message to get a permanent telegra.ph link.**"
+                "**Responda a uma mensagem para obter um link telegra.ph permanente.**"
             )
 
 
@@ -86,6 +86,6 @@ def resize_image(image):
 CMD_HELP.update(
     {
         "telegraph": ">`.telegraph media|text`"
-        "\nUsage: Upload text & media on Telegraph."
+        "\n**Uso:** Envie texto & mídia no Telegraph."
     }
 )

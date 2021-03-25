@@ -65,10 +65,10 @@ async def time_func(tdata):
         tz_num = TZ_NUMBER
         timezones = await get_tz(COUNTRY)
     else:
-        return await tdata.edit(f"**It's** `{dt.now().strftime(t_form)}` **here.**")
+        return await tdata.edit(f"**São** `{dt.now().strftime(t_form)}` **aqui.**")
 
     if not timezones:
-        return await tdata.edit("**Invaild country.**")
+        return await tdata.edit("**País inválido.**")
 
     if len(timezones) == 1:
         time_zone = timezones[0]
@@ -77,14 +77,14 @@ async def time_func(tdata):
             tz_num = int(tz_num)
             time_zone = timezones[tz_num - 1]
         else:
-            return_str = f"**{c_name} has multiple timezones:**\n\n"
+            return_str = f"**{c_name} tem vários fusos horários:**\n\n"
 
             for i, item in enumerate(timezones):
                 return_str += f"`{i+1}. {item}`\n"
 
-            return_str += "\nChoose one by typing the number "
-            return_str += "in the command.\n"
-            return_str += f"**Example:** `.time {c_name} 2`"
+            return_str += "\nEscolha um digitando o número "
+            return_str += "no comando.\n"
+            return_str += f"**Exemplo:** `.time {c_name} 2`"
 
             return await tdata.edit(return_str)
 
@@ -92,11 +92,11 @@ async def time_func(tdata):
 
     if c_name != COUNTRY:
         return await tdata.edit(
-            f"**It's** `{dtnow}` **in {c_name}({time_zone} timezone).**"
+            f"**São** `{dtnow}` **em {c_name}({time_zone} fuso horário).**"
         )
     if COUNTRY:
         return await tdata.edit(
-            f"**It's** `{dtnow}` **here, in {COUNTRY}" f"({time_zone} timezone).**"
+            f"**São** `{dtnow}` **aqui, em {COUNTRY}" f"({time_zone} fuso horário).**"
         )
 
 
@@ -124,10 +124,10 @@ async def date_func(dat):
         tz_num = TZ_NUMBER
         timezones = await get_tz(COUNTRY)
     else:
-        return await dat.edit(f"**It's** `{dt.now().strftime(d_form)}` **here.**")
+        return await dat.edit(f"**São** `{dt.now().strftime(d_form)}` **aqui.**")
 
     if not timezones:
-        return await dat.edit("**Invaild country.**")
+        return await dat.edit("**País inválido.**")
 
     if len(timezones) == 1:
         time_zone = timezones[0]
@@ -136,14 +136,14 @@ async def date_func(dat):
             tz_num = int(tz_num)
             time_zone = timezones[tz_num - 1]
         else:
-            return_str = f"**{c_name} has multiple timezones:**\n"
+            return_str = f"**{c_name} tem vários fusos horários:**\n"
 
             for i, item in enumerate(timezones):
                 return_str += f"`{i+1}. {item}`\n"
 
-            return_str += "\nChoose one by typing the number "
-            return_str += "in the command.\n"
-            return_str += f"**Example:** `.date {c_name} 2`"
+            return_str += "\nEscolha um digitando o número "
+            return_str += "no comando.\n"
+            return_str += f"**Exemplo:** `.date {c_name} 2`"
 
             return await dat.edit(return_str)
 
@@ -151,21 +151,21 @@ async def date_func(dat):
 
     if c_name != COUNTRY:
         return await dat.edit(
-            f"**It's** `{dtnow}` **in {c_name}({time_zone} timezone).**"
+            f"**São** `{dtnow}` **em {c_name}({time_zone} fuso horário).**"
         )
     if COUNTRY:
         return await dat.edit(
-            f"**It's** `{dtnow}` **here, in {COUNTRY}" f"({time_zone} timezone).**"
+            f"**São** `{dtnow}` **aqui, em {COUNTRY}" f"({time_zone} fuso horário).**"
         )
 
 
 CMD_HELP.update(
     {
-        "time": ">`.time <country name/code> <timezone number>`"
-        "\nUsage: Get the time of a country. If a country has "
-        "multiple timezones, it will list all of them and let you select one.",
-        "date": ">`.date <country name/code> <timezone number>`"
-        "\nUsage: Get the date of a country. If a country has "
-        "multiple timezones, it will list all of them and let you select one.",
+        "time": ">`.time <nome do país/código> <número do fuso horário>`"
+        "\n**Uso:** Obtenha a hora de um país. Se um país tem "
+        "vários fusos horários, ele irá listar todos eles e permitir que você selecione um.",
+        "date": ">`.date <nome/código do país> <número do fuso horário>`"
+        "\n**Uso:** Obtenha a data de um país. Se um país tem "
+        "vários fusos horários, ele irá listar todos eles e permitir que você selecione um.",
     }
 )

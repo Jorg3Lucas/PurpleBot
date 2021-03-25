@@ -64,7 +64,7 @@ def register(**args):
                 return
 
             if groups_only and not check.is_group:
-                await check.respond("`I don't think this is a group.`")
+                await check.respond("`Eu não acho que isso seja um grupo.`")
                 return
 
             try:
@@ -100,33 +100,33 @@ def register(**args):
 
                     date = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
-                    text = "**USERBOT ERROR REPORT**\n"
-                    link = "[Support Chat](https://t.me/KensurOT)"
-                    text += "If you want to, you can report it"
-                    text += f"- just forward this message to {link}.\n"
-                    text += "I won't log anything except the fact of error and date\n"
+                    text = "**RELATÓRIO DE ERRO DO USERBOT**\n"
+                    link = "[SUPORTE](https://t.me/Kircheiss)"
+                    text += "Caso queira"
+                    text += f"- encaminhe esta mensagem para {link}.\n"
+                    text += "Nada será registrado, exceto o módulo do erro e a data\n"
 
-                    ftext = "\nDisclaimer:\nThis file uploaded ONLY here, "
-                    ftext += "we logged only fact of error and date, "
-                    ftext += "we respect your privacy, "
-                    ftext += "you may not report this error if you've "
-                    ftext += "any confidential data here, no one will see your data "
-                    ftext += "if you choose not to do so.\n\n"
-                    ftext += "--------BEGIN USERBOT TRACEBACK LOG--------"
-                    ftext += "\nDate: " + date
+                    ftext = "\nALERTA:\nEste arquivo foi carregado SOMENTE aqui, "
+                    ftext += "registramos apenas o motivo do erro e a data, "
+                    ftext += "Nós respeitamos sua privacidade, "
+                    ftext += "você não deve relatar este erro caso existam "
+                    ftext += "quaisquer dados confidenciais aqui, ninguém vai ver seus dados "
+                    ftext += "se você escolher não fazer isso.\n\n"
+                    ftext += "--------INÍCIO DO RELATÓRIO--------"
+                    ftext += "\nData: " + date
                     ftext += "\nChat ID: " + str(check.chat_id)
-                    ftext += "\nSender ID: " + str(check.sender_id)
-                    ftext += "\n\nEvent Trigger:\n"
+                    ftext += "\nUser ID: " + str(check.sender_id)
+                    ftext += "\n\nComando:\n"
                     ftext += str(check.text)
-                    ftext += "\n\nTraceback info:\n"
+                    ftext += "\n\nInformações de traceback:\n"
                     ftext += str(format_exc())
-                    ftext += "\n\nError text:\n"
+                    ftext += "\n\nTexto de erro:\n"
                     ftext += str(sys.exc_info()[1])
-                    ftext += "\n\n--------END USERBOT TRACEBACK LOG--------"
+                    ftext += "\n\n--------FIM DO RELATÓRIO--------"
 
                     command = 'git log --pretty=format:"%an: %s" -10'
 
-                    ftext += "\n\n\nLast 10 commits:\n"
+                    ftext += "\n\n\nÚltimos 10 commits:\n"
 
                     process = await asyncsubshell(
                         command, stdout=asyncsub.PIPE, stderr=asyncsub.PIPE

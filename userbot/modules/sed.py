@@ -74,20 +74,20 @@ async def sed(command):
             to_fix = textx.text
         else:
             return await command.edit(
-                "**Master, I don't have brains. Well you neither I guess.**"
+                "**Mestre, eu não tenho cérebro. Bem, nem você eu acho.**"
             )
 
         repl, repl_with, flags = sed_result
 
         if not repl:
             return await command.edit(
-                "**Master, I don't have brains. Well you neither I guess.**"
+                "**Mestre, eu não tenho cérebro. Bem, nem você eu acho.**"
             )
 
         try:
             check = re.match(repl, to_fix, flags=re.IGNORECASE)
             if check and check.group(0).lower() == to_fix.lower():
-                return await command.edit("**Boi!, that's a reply. Don't use sed**")
+                return await command.edit("**Mlk!, isso é uma resposta. Não use sed**")
 
             if "i" in flags and "g" in flags:
                 text = re.sub(repl, repl_with, to_fix, flags=re.I).strip()
@@ -100,13 +100,13 @@ async def sed(command):
         except sre_err:
             return await command.edit("B O I! [Learn Regex](https://regexone.com)")
         if text:
-            await command.edit(f"**Did you mean?** \n\n{text}")
+            await command.edit(f"**Você quis dizer?** \n\n{text}")
 
 
 CMD_HELP.update(
     {
-        "sed": ">`.s<delimiter><old word(s)><delimiter><new word(s)>`"
-        "\nUsage: Replaces a word or words using sed."
-        "\nDelimiters: `/, :, |, _`"
+        "sed": ">`.s<delimitador><palavra-original><delimitador><nova palavra>`"
+        "\n**Uso:** Substitui uma palavra ou palavras usando sed."
+        "\nDelimitadores: `/, :, |, _`"
     }
 )

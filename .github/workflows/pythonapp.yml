@@ -1,4 +1,4 @@
-name: KensurCheck
+name: PurpleCheck
 
 on: [push, pull_request]
 

@@ -12,15 +12,15 @@ from userbot.events import register
 
 @register(outgoing=True, pattern=r"^\.ts(?: |$)(.*)")
 async def torrent(event):
-    await event.edit("**Searching...**")
+    await event.edit("**Procurando...**")
     query = event.pattern_match.group(1)
     response = requests.get(f"https://api.sumanjay.cf/torrent/?query={query}")
     try:
         ts = json.loads(response.text)
     except json.decoder.JSONDecodeError:
-        return await event.edit("**Error: API is down right now, try again later.**")
+        return await event.edit("**Erro: API está inativa agora, tente novamente mais tarde.**")
     if ts != response.json():
-        return await event.edit("**Error: API is down right now, try again later.**")
+        return await event.edit("**Erro: API está inativa agora, tente novamente mais tarde.**")
     listdata = ""
     run = 0
     while True:
@@ -35,13 +35,13 @@ async def torrent(event):
             break
 
     if not listdata:
-        return await event.edit("**Error: No results found.**")
+        return await event.edit("**Erro: Nenhum resultado encontrado.**")
 
-    await event.edit("**Uploading results...**")
+    await event.edit("**Enviando resultados...**")
     tsfileloc = f"{TEMP_DOWNLOAD_DIRECTORY}{query}.txt"
     with open(tsfileloc, "w+", encoding="utf8") as out_file:
         out_file.write(str(listdata))
-    caption = f"Torrents for: `{query}`"
+    caption = f"Torrents para: `{query}`"
     await event.client.send_file(
         event.chat_id, tsfileloc, caption=caption, force_document=False
     )
@@ -50,5 +50,5 @@ async def torrent(event):
 
 
 CMD_HELP.update(
-    {"torrent": ">`.ts` <query>" "\nUsage: Search for torrents of given query"}
+    {"torrent": ">`.ts` <consulta>" "\n**Uso:** Pesquisa por torrents de determinada consulta"}
 )

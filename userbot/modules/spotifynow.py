@@ -15,7 +15,7 @@ async def _(event):
         return
     chat = "@SpotifyNowBot"
     now = "/now"
-    await event.edit("**Processing...**")
+    await event.edit("**Processando...**")
     try:
         async with event.client.conversation(chat) as conv:
             try:
@@ -24,11 +24,11 @@ async def _(event):
                 """ - don't spam notif - """
                 await bot.send_read_acknowledge(conv.chat_id)
             except YouBlockedUserError:
-                await event.reply("**Please unblock** @SpotifyNowBot**.**")
+                await event.reply("**Por favor desbloqueie** @SpotifyNowBot**.**")
                 return
             if response.text.startswith("You're"):
                 await event.edit(
-                    "**You're not listening to anything on Spotify at the moment.**"
+                    "**Você não está ouvindo nada no Spotify no momento.**"
                 )
                 return
             downloaded_file_name = await event.client.download_media(
@@ -39,12 +39,12 @@ async def _(event):
                 event.chat_id,
                 downloaded_file_name,
                 force_document=False,
-                caption=f"[Play on Spotify]({link})",
+                caption=f"[Tocar no Spotify]({link})",
             )
             """ - cleanup chat after completed - """
             await event.client.delete_messages(conv.chat_id, [msg.id, response.id])
     except TimeoutError:
-        return await event.edit("**Error:** @SpotifyNowBot **is not responding.**")
+        return await event.edit("**Erro:** @SpotifyNowBot **não está respondendo.**")
     await event.delete()
     return os.remove(downloaded_file_name)
 
@@ -52,7 +52,7 @@ async def _(event):
 CMD_HELP.update(
     {
         "spotifynow": ">`.spotnow`"
-        "\nUsage: Show what you're listening on spotify."
+        "\n**Uso:** Mostre o que você está ouvindo no spotify."
         "\n@SpotifyNowBot"
     }
 )
